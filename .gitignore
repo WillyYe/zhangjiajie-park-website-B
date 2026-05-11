@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Backup files
+backup/
+*.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
