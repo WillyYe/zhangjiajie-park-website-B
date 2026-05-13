@@ -579,6 +579,23 @@
       z-index: 11;
       transition: width 0.1s linear;
     }
+    .news-date {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.3;
+      pointer-events: none;
+    }
+    .news-date-day {
+      font-size: 18px;
+      font-weight: 700;
+    }
     .news-tag {
       display: inline-block;
       padding: 4px 12px;
@@ -1076,13 +1093,10 @@
     @media (max-width: 480px) {
       .hero-title { font-size: 32px; }
       .hero-desc { font-size: 14px; }
-      .info-inner { grid-template-columns: 1fr; }
+      .info-inner { flex-direction: column; gap: 16px; }
       .btn { padding: 10px 20px; font-size: 14px; }
     }
     .gallery-item.hidden { display: none; }
-    .img-error { opacity: 0.5; }
-    .bg-loaded { transition: background-image 0.3s; }
-    .loaded { filter: blur(0); }
 
     /* ========== SKELETON ========== */
     @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
@@ -1310,7 +1324,7 @@
       <div class="transport-map">
         <div class="map-placeholder">
           <div class="map-placeholder-icon">🗺️</div>
-          <div class="map-placeholder-text" data-i18n="map_loading">加载地图中...</div>
+          <div class="map-placeholder-text" data-i18n="map_loading">Loading map...</div>
         </div>
       </div>
       <div class="transport-ways">
@@ -1408,7 +1422,7 @@
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <button class="lightbox-nav lightbox-prev" onclick="lightboxPrev()">‹</button>
-    <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Gallery image">
     <button class="lightbox-nav lightbox-next" onclick="lightboxNext()">›</button>
   </div>
 
@@ -1419,7 +1433,8 @@
       currentLang: 'en',
       scenicPage: 1,
       heroSlider: null,
-      currentSlide: 0
+      currentSlide: 0,
+      heroAutoplay: true
     };
 
     /* ========== UTILITY FUNCTIONS ========== */
@@ -1798,12 +1813,13 @@
     function switchLang(lang) {
       AppState.currentLang = lang;
       
-      // Update lang switch buttons (with null check)
-      document.querySelectorAll('.lang-switch button').forEach(function(btn) {
+      // Update all lang switch buttons (header + mobile nav)
+      document.querySelectorAll('.lang-switch button, .mobile-nav-lang button').forEach(function(btn) {
         btn.classList.remove('active');
       });
-      var langBtn = document.querySelector('.lang-switch button[data-lang="' + lang + '"]');
-      if (langBtn) langBtn.classList.add('active');
+      document.querySelectorAll('.lang-switch button[data-lang="' + lang + '"], .mobile-nav-lang button[data-lang="' + lang + '"]').forEach(function(btn) {
+        btn.classList.add('active');
+      });
       
       // Update lang-switch container attribute for CSS animation
       var langSwitch = document.querySelector('.lang-switch');
@@ -1817,8 +1833,10 @@
         }
       });
       
-      // Re-render dynamic content
+      // Re-render dynamic content WITHOUT resetting carousel position
+      var savedSlide = NewsCarouselState.currentSlide;
       renderNewsCarousel();
+      goToNewsSlide(savedSlide);
       renderExperience();
       renderGallery();
       renderScenic();
@@ -1836,7 +1854,8 @@
       touchEndX: 0
     };
 
-    function renderNewsCarousel() {
+    function renderNewsCarousel(resetSlide) {
+      if (resetSlide === undefined) resetSlide = true;
       var carousel = document.getElementById('newsCarousel');
       var dotsContainer = document.getElementById('newsCarouselDots');
       if (!carousel || !dotsContainer) return;
@@ -1845,7 +1864,7 @@
       var cardsPerSlide = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 1024 ? 2 : 3);
       var totalSlides = Math.ceil(newsData.length / cardsPerSlide);
       NewsCarouselState.totalSlides = totalSlides;
-      NewsCarouselState.currentSlide = 0;
+      if (resetSlide) NewsCarouselState.currentSlide = 0;
       
       var html = '';
       for (var i = 0; i < totalSlides; i++) {
@@ -1969,6 +1988,7 @@
     }
 
     function handleNewsTouchEnd() {
+      if (NewsCarouselState.touchStartX === 0) { resumeNewsCarousel(); return; }
       var diff = NewsCarouselState.touchStartX - NewsCarouselState.touchEndX;
       var threshold = 50;
       if (diff > threshold) {
@@ -2245,10 +2265,11 @@
       var fadeEls = document.querySelectorAll('.fade-up');
       
       if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function(entries) {
+        var observer = new IntersectionObserver(function(entries, obs) {
           entries.forEach(function(entry) {
             if (entry.isIntersecting) {
               entry.target.classList.add('visible');
+              obs.unobserve(entry.target);
             }
           });
         }, { threshold: 0.1 });
@@ -2354,12 +2375,12 @@
           newsCarousel.addEventListener('touchend', handleNewsTouchEnd, { passive: true });
         }
         
-        // Handle resize
+        // Handle resize - do not reset carousel position
         var resizeTimer;
         window.addEventListener('resize', function() {
           clearTimeout(resizeTimer);
           resizeTimer = setTimeout(function() {
-            renderNewsCarousel();
+            renderNewsCarousel(false);
           }, 250);
         });
       }
