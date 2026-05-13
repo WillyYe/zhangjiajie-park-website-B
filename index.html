@@ -1936,23 +1936,29 @@
         if (e.target === this) closeLightbox();
       });
 
-      // Mobile menu
+      // Mobile menu - with null checks
       var mobileMenuBtn = document.getElementById('mobileMenuBtn');
       var mobileNav = document.getElementById('mobileNav');
       var mobileNavOverlay = document.getElementById('mobileNavOverlay');
       var mobileNavClose = document.getElementById('mobileNavClose');
 
+      if (!mobileMenuBtn || !mobileNav) {
+        console.warn('Mobile menu elements not found');
+      } else {
+
       function openMobileNav() {
         mobileMenuBtn.classList.add('active');
         mobileNav.classList.add('open');
-        mobileNavOverlay.classList.add('open');
+        if (mobileNavOverlay) mobileNavOverlay.classList.add('open');
+        document.documentElement.style.overflow = 'hidden';
         document.body.style.overflow = 'hidden';
       }
 
       function closeMobileNav() {
         mobileMenuBtn.classList.remove('active');
         mobileNav.classList.remove('open');
-        mobileNavOverlay.classList.remove('open');
+        if (mobileNavOverlay) mobileNavOverlay.classList.remove('open');
+        document.documentElement.style.overflow = '';
         document.body.style.overflow = '';
       }
 
@@ -1964,13 +1970,16 @@
         }
       });
 
-      mobileNavClose.addEventListener('click', closeMobileNav);
-      mobileNavOverlay.addEventListener('click', closeMobileNav);
+      if (mobileNavClose) mobileNavClose.addEventListener('click', closeMobileNav);
+      if (mobileNavOverlay) mobileNavOverlay.addEventListener('click', closeMobileNav);
 
       // Mobile nav links - close on click
-      mobileNav.querySelectorAll('a').forEach(function(link) {
-        link.addEventListener('click', closeMobileNav);
-      });
+      if (mobileNav) {
+        mobileNav.querySelectorAll('a').forEach(function(link) {
+          link.addEventListener('click', closeMobileNav);
+        });
+      }
+      } // end null check
     });
   </script>
 
