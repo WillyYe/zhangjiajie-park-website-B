@@ -579,6 +579,24 @@
       z-index: 11;
       transition: width 0.1s linear;
     }
+    .news-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .news-tag.overview { background: #e8f5e9; color: #2e7d32; }
+    .news-tag.honor    { background: #fff8e1; color: #f57f17; }
+    .news-tag.geo      { background: #e3f2fd; color: #1565c0; }
+    .news-tag.eco      { background: #f3e5f5; color: #6a1b9a; }
+    .news-tag.avatar   { background: #e0f7fa; color: #00838f; }
+    /* fallback for old tags */
+    .news-tag.announce { background: #fff3e0; color: #e65100; }
+    .news-tag.event    { background: #e8f5e9; color: #2e7d32; }
+    .news-tag.notice   { background: #e3f2fd; color: #1565c0; }
 
     /* ========== SCENIC ========== */
     #scenic {
@@ -1535,33 +1553,53 @@
     /* ========== DATA ========== */
     var newsData = [
       {
-        date: { day: '15', month: 'MAY' },
-        tag: 'announce',
-        tagText: '公告',
-        title: '2026年旺季运营时间调整通知',
-        titleEn: '2026 Peak Season Hours Adjustment',
-        desc: '自5月1日起，公园运营时间调整为6:30-18:30，请游客合理安排游览时间。',
-        descEn: 'From May 1st, park hours adjust to 6:30-18:30. Please plan your visit accordingly.',
+        date: { day: '13', month: 'MAY' },
+        tag: 'overview',
+        tagText: '基本概况',
+        title: '张家界国家森林公园概况',
+        titleEn: 'Zhangjiajie at a Glance',
+        desc: '位于湖南张家界武陵源，总面积4810公顷，海拔400-1334米，1982年经国务院批准建立为中国首个国家森林公园。',
+        descEn: 'Located in Wulingyuan, Zhangjiajie, Hunan — 4,810 hectares, elevation 400–1,334m, established in 1982 as China\'s first national forest park.',
         img: 'assets/images/news-park.jpg'
       },
       {
-        date: { day: '08', month: 'MAY' },
-        tag: 'event',
-        tagText: '活动',
-        title: '第十届张家界国际森林文化节开幕',
-        titleEn: '10th Zhangjiajie International Forest Cultural Festival',
-        desc: '本次文化节将持续一个月，包含摄影大赛、民俗表演、生态科普等系列活动。',
-        descEn: 'The festival runs for one month, featuring photo contests, folk performances, and eco-education.',
+        date: { day: '11', month: 'MAY' },
+        tag: 'honor',
+        tagText: '荣誉称号',
+        title: '世界级认证与荣誉',
+        titleEn: 'World-Class Recognition',
+        desc: '中国首个国家森林公园（1982）、世界自然遗产（1992）、世界地质公园（2004）、国家5A级景区（2007），四重荣誉加持。',
+        descEn: 'China\'s first national forest park (1982), World Natural Heritage (1992), World Geopark (2004), National 5A scenic spot (2007) — four prestigious designations.',
         img: 'assets/images/news-festival.jpg'
       },
       {
-        date: { day: '01', month: 'MAY' },
-        tag: 'notice',
-        tagText: '提示',
-        title: '天子山索道维护完工，恢复正常运营',
-        titleEn: 'Tianzishan Cableway Resumes Operations',
-        desc: '经过一周的检修维护，天子山索道已于5月1日正式恢复运营，欢迎游客乘坐。',
-        descEn: 'After a week of maintenance, the Tianzishan Cableway officially resumed operations on May 1st.',
+        date: { day: '10', month: 'MAY' },
+        tag: 'geo',
+        tagText: '地质奇观',
+        title: '3.8亿年石英砂岩峰林地貌',
+        titleEn: '380 Million Years of Geological Heritage',
+        desc: '拥有3.8亿年历史的石英砂岩峰林地貌，分布着3000余座奇峰与800余条溪流，被誉为"缩小的仙境"。',
+        descEn: '380-million-year-old quartz sandstone pillar formations with 3,000+ peaks and 800+ streams — a paradise in miniature.',
+        img: 'assets/images/news-cableway.jpg'
+      },
+      {
+        date: { day: '07', month: 'MAY' },
+        tag: 'eco',
+        tagText: '生态数据',
+        title: '森林覆盖率85.28%的天然氧吧',
+        titleEn: '85.28% Forest Coverage — A Natural Oxygen Bar',
+        desc: '园区森林覆盖率高达85.28%，记录有4000余种动植物，其中81种受国家级保护，是真正的生态宝库。',
+        descEn: 'With 85.28% forest coverage, 4,000+ species of flora and fauna, and 81 nationally protected species, the park is a true ecological treasure.',
+        img: 'assets/images/news-cableway.jpg'
+      },
+      {
+        date: { day: '05', month: 'MAY' },
+        tag: 'avatar',
+        tagText: '阿凡达关联',
+        title: '哈利路亚山的灵感之源',
+        titleEn: 'Where Avatar\'s Floating Mountains Came From',
+        desc: '袁家界景区被认为是电影《阿凡达》中"哈利路亚山"的灵感来源地，中美地质学家共同认可这一自然奇观的独特价值。',
+        descEn: 'Yuanjiajie is widely recognized by Chinese and American geologists as the inspiration for the floating Hallelujah Mountains in Avatar.',
         img: 'assets/images/news-cableway.jpg'
       }
     ];
