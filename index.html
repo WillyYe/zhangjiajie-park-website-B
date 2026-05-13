@@ -14,6 +14,7 @@
   <!-- Preconnect for Fonts - with display=swap for faster rendering -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preload" as="image" href="assets/images/hero-pillars.jpg" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
   <noscript>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+SC:wght@400;500&family=Noto+Serif+SC:wght@600;700&display=swap" rel="stylesheet" />
@@ -555,6 +556,7 @@
       background-size: cover;
       background-position: center;
       transition: transform 0.4s;
+      will-change: transform;
     }
     .scenic-card:hover .scenic-bg {
       transform: scale(1.05);
@@ -650,6 +652,7 @@
       height: 100%;
       object-fit: cover;
       transition: transform 0.4s;
+      will-change: transform;
     }
     .exp-card:hover .exp-img img {
       transform: scale(1.1);
@@ -908,15 +911,19 @@
       inset: 0;
       background: rgba(0,0,0,0.95);
       z-index: 2000;
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity 0.3s;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.3s, visibility 0.3s;
+      transform: translateZ(0);
     }
     .lightbox.open {
-      display: flex;
       opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
     .lightbox-img {
       max-width: 90vw;
@@ -999,10 +1006,49 @@
       .info-inner { grid-template-columns: 1fr; }
       .btn { padding: 10px 20px; font-size: 14px; }
     }
+    .gallery-item.hidden { display: none; }
+    .img-error { opacity: 0.5; }
+    .bg-loaded { transition: background-image 0.3s; }
+    .loaded { filter: blur(0); }
+
+    /* ========== SKELETON ========== */
+    @keyframes skeleton-loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .skeleton { background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%); background-size: 200% 100%; animation: skeleton-loading 1.5s infinite; }
+    .skeleton-card { border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 2px 12px var(--shadow); }
+    .skeleton-img { height: 180px; }
+    .skeleton-text { height: 16px; margin: 16px 20px 8px; border-radius: 4px; }
+    .skeleton-text-short { width: 60%; height: 14px; margin: 0 20px 18px; }
+
+    /* ========== FOCUS ========== */
+    :focus-visible { outline: 2px solid var(--green-accent); outline-offset: 2px; }
+    .skip-link { position: absolute; top: -100px; left: 50%; transform: translateX(-50%); background: var(--green-dark); color: white; padding: 12px 24px; border-radius: 8px; z-index: 10000; transition: top 0.3s; }
+    .skip-link:focus { top: 10px; }
+
+    /* ========== BACK TO TOP ========== */
+    .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 48px; height: 48px; background: var(--green-mid); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(26,74,48,0.3); z-index: 900; }
+    .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+    .back-to-top:hover { background: var(--green-dark); transform: translateY(-2px); }
+
+    /* ========== HERO NAV ARROWS ========== */
+    .hero-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; cursor: pointer; transition: all 0.3s; opacity: 0; border: 1px solid rgba(255,255,255,0.2); z-index: 10; }
+    .hero:hover .hero-nav { opacity: 1; }
+    .hero-nav:hover { background: rgba(255,255,255,0.25); transform: translateY(-50%) scale(1.1); }
+    .hero-nav.prev { left: 30px; }
+    .hero-nav.next { right: 30px; }
+    .hero-pause { position: absolute; bottom: 40px; right: 30px; width: 36px; height: 36px; background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; cursor: pointer; opacity: 0; transition: opacity 0.3s; z-index: 10; border: 1px solid rgba(255,255,255,0.2); }
+    .hero:hover .hero-pause { opacity: 1; }
+
+    /* ========== LIGHTBOX ENHANCE ========== */
+    .lightbox-counter { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.5); padding: 6px 16px; border-radius: 20px; color: white; font-size: 13px; z-index: 10; }
+    .lightbox-caption { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: white; font-size: 14px; text-align: center; max-width: 80%; opacity: 0.9; z-index: 10; }
+    .lightbox-img { transition: opacity 0.3s; }
+    .lightbox-img.changing { opacity: 0; }
+
   </style>
 </head>
 <body>
-
+  <a href="#header" class="skip-link" data-i18n="skip_link">Skip to main content</a>
+  
   <!-- ========== HEADER ========== -->
   <header class="header" id="header">
     <div class="header-inner">
@@ -1079,6 +1125,9 @@
       <button class="hero-dot" data-slide="1"></button>
       <button class="hero-dot" data-slide="2"></button>
     </div>
+    <button class="hero-nav prev" aria-label="Previous slide">‹</button>
+    <button class="hero-nav next" aria-label="Next slide">›</button>
+    <button class="hero-pause" aria-label="Pause autoplay">⏸</button>
   </section>
 
   <!-- ========== INFO BAR ========== -->
@@ -1292,6 +1341,14 @@
       currentSlide: 0
     };
 
+    /* ========== UTILITY FUNCTIONS ========== */
+    function escapeHtml(str) {
+      if (!str) return '';
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     /* ========== I18N DATA ========== */
     var i18n = {
       en: {
@@ -1349,7 +1406,8 @@
         footer_shop: 'Official Shop',
         footer_privacy: 'Privacy Policy',
         footer_terms: 'Terms of Use',
-        footer_icp: 'ICP 00000000-X'
+        footer_icp: 'ICP 00000000-X',
+        skip_link: 'Skip to main content'
       },
       zh: {
         nav_news: '公园资讯',
@@ -1406,7 +1464,8 @@
         footer_shop: '官方商城',
         footer_privacy: '隐私政策',
         footer_terms: '使用条款',
-        footer_icp: '湘ICP备XXXXXXXX号'
+        footer_icp: '湘ICP备XXXXXXXX号',
+        skip_link: '跳转到主要内容'
       }
     };
 
@@ -1638,11 +1697,16 @@
     function switchLang(lang) {
       AppState.currentLang = lang;
       
-      // Update lang switch buttons
+      // Update lang switch buttons (with null check)
       document.querySelectorAll('.lang-switch button').forEach(function(btn) {
         btn.classList.remove('active');
       });
-      document.querySelector('.lang-switch button[data-lang="' + lang + '"]').classList.add('active');
+      var langBtn = document.querySelector('.lang-switch button[data-lang="' + lang + '"]');
+      if (langBtn) langBtn.classList.add('active');
+      
+      // Update lang-switch container attribute for CSS animation
+      var langSwitch = document.querySelector('.lang-switch');
+      if (langSwitch) langSwitch.setAttribute('data-active', lang);
       
       // Update all i18n elements
       document.querySelectorAll('[data-i18n]').forEach(function(el) {
@@ -1667,16 +1731,16 @@
       
       newsData.forEach(function(item) {
         html += '<div class="news-card" onclick="window.open(\'http://www.hnzjj.com/\', \'_blank\')">';
-        html += '<div class="news-img" style="background-image: url(\'' + item.img + '\')">';
+        html += '<div class="news-img" style="background-image: url(\'' + escapeHtml(item.img) + '\')">';
         html += '<div class="news-date">';
-        html += '<div class="news-date-day">' + item.date.day + '</div>';
-        html += '<div>' + item.date.month + '</div>';
+        html += '<div class="news-date-day">' + escapeHtml(item.date.day) + '</div>';
+        html += '<div>' + escapeHtml(item.date.month) + '</div>';
         html += '</div>';
-        html += '<div class="news-tag">' + (lang === 'zh' ? item.tagText : item.tag.toUpperCase()) + '</div>';
+        html += '<div class="news-tag">' + escapeHtml(lang === 'zh' ? item.tagText : item.tag.toUpperCase()) + '</div>';
         html += '</div>';
         html += '<div class="news-body">';
-        html += '<h3 class="news-title">' + (lang === 'zh' ? item.title : item.titleEn) + '</h3>';
-        html += '<p class="news-text">' + (lang === 'zh' ? item.desc : item.descEn) + '</p>';
+        html += '<h3 class="news-title">' + escapeHtml(lang === 'zh' ? item.title : item.titleEn) + '</h3>';
+        html += '<p class="news-text">' + escapeHtml(lang === 'zh' ? item.desc : item.descEn) + '</p>';
         html += '</div></div>';
       });
       
@@ -1689,11 +1753,11 @@
       var html = '';
       
       expData.forEach(function(item) {
-        html += '<a href="exp-detail.html?id=' + item.id + '" class="exp-card">';
-        html += '<div class="exp-img"><img src="' + item.img + '" alt="' + (lang === 'zh' ? item.title : item.titleEn) + '" loading="lazy"></div>';
+        html += '<a href="exp-detail.html?id=' + escapeHtml(item.id) + '" class="exp-card">';
+        html += '<div class="exp-img"><img src="' + escapeHtml(item.img) + '" alt="' + escapeHtml(lang === 'zh' ? item.title : item.titleEn) + '" loading="lazy"></div>';
         html += '<div class="exp-body">';
-        html += '<h4 class="exp-title">' + (lang === 'zh' ? item.title : item.titleEn) + '</h4>';
-        html += '<p class="exp-desc">' + (lang === 'zh' ? item.desc : item.descEn) + '</p>';
+        html += '<h4 class="exp-title">' + escapeHtml(lang === 'zh' ? item.title : item.titleEn) + '</h4>';
+        html += '<p class="exp-desc">' + escapeHtml(lang === 'zh' ? item.desc : item.descEn) + '</p>';
         html += '</div></a>';
       });
       
@@ -1728,13 +1792,13 @@
         pageItems.forEach(function(item, idx) {
           console.log('[renderScenic] Item', idx, ':', item.id, ', img:', item.img);
           html += '<a href="' + item.href + '" class="scenic-card fade-up">';
-          html += '<div class="scenic-bg" style="background-image: url(\'' + item.img + '\')"></div>';
+          html += '<div class="scenic-bg" style="background-image: url(\'' + escapeHtml(item.img) + '\')"></div>';
           html += '<div class="scenic-overlay">';
-          html += '<div class="scenic-tag">' + (isZh ? item.tag : item.tagEn) + '</div>';
-          html += '<h3 class="scenic-name">' + (isZh ? item.name : item.nameEn) + '</h3>';
-          html += '<p class="scenic-sub">' + (isZh ? item.subTitle : item.subTitleEn) + '</p>';
-          html += '<p class="scenic-desc">' + (isZh ? item.desc : item.descEn) + '</p>';
-          html += '<span class="scenic-link">' + (isZh ? '探索更多 →' : 'Explore More →') + '</span>';
+          html += '<div class="scenic-tag">' + escapeHtml(isZh ? item.tag : item.tagEn) + '</div>';
+          html += '<h3 class="scenic-name">' + escapeHtml(isZh ? item.name : item.nameEn) + '</h3>';
+          html += '<p class="scenic-sub">' + escapeHtml(isZh ? item.subTitle : item.subTitleEn) + '</p>';
+          html += '<p class="scenic-desc">' + escapeHtml(isZh ? item.desc : item.descEn) + '</p>';
+          html += '<span class="scenic-link">' + escapeHtml(isZh ? '探索更多 →' : 'Explore More →') + '</span>';
           html += '</div></a>';
         });
         
@@ -1787,10 +1851,10 @@
       var html = '';
       
       galleryData.forEach(function(item, index) {
-        html += '<div class="gallery-item" data-category="' + item.cat + '" onclick="openLightbox(' + index + ')">';
-        html += '<img src="' + item.img + '" alt="' + (lang === 'zh' ? item.title : item.titleEn) + '" loading="lazy" decoding="async">';
+        html += '<div class="gallery-item" data-category="' + escapeHtml(item.cat) + '" onclick="openLightbox(' + index + ')">';
+        html += '<img src="' + escapeHtml(item.img) + '" alt="' + escapeHtml(lang === 'zh' ? item.title : item.titleEn) + '" loading="lazy" decoding="async">';
         html += '<div class="gallery-overlay">';
-        html += '<span class="gallery-title">' + (lang === 'zh' ? item.title : item.titleEn) + '</span>';
+        html += '<span class="gallery-title">' + escapeHtml(lang === 'zh' ? item.title : item.titleEn) + '</span>';
         html += '</div></div>';
       });
       
@@ -1802,13 +1866,13 @@
       document.querySelectorAll('.gallery-filter button').forEach(function(b) {
         b.classList.remove('active');
       });
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       
       document.querySelectorAll('.gallery-item').forEach(function(item) {
         if (cat === 'all' || item.dataset.category === cat) {
-          item.style.display = '';
+          item.classList.remove('hidden');
         } else {
-          item.style.display = 'none';
+          item.classList.add('hidden');
         }
       });
     }
@@ -1818,61 +1882,120 @@
       var slides = document.querySelectorAll('.hero-slide');
       var dots = document.querySelectorAll('.hero-dot');
       
+      if (slides.length === 0 || dots.length === 0) return;
+      
       if (AppState.heroSlider) {
         clearInterval(AppState.heroSlider);
       }
       
       AppState.heroSlider = setInterval(function() {
-        slides[AppState.currentSlide].classList.remove('active');
-        dots[AppState.currentSlide].classList.remove('active');
-        
-        AppState.currentSlide = (AppState.currentSlide + 1) % slides.length;
-        
-        slides[AppState.currentSlide].classList.add('active');
-        dots[AppState.currentSlide].classList.add('active');
-      }, 5000);
-      
-      // Click to change slide
-      dots.forEach(function(dot, index) {
-        dot.addEventListener('click', function() {
+        requestAnimationFrame(function() {
           slides[AppState.currentSlide].classList.remove('active');
           dots[AppState.currentSlide].classList.remove('active');
           
-          AppState.currentSlide = index;
+          AppState.currentSlide = (AppState.currentSlide + 1) % slides.length;
           
           slides[AppState.currentSlide].classList.add('active');
           dots[AppState.currentSlide].classList.add('active');
-          
-          clearInterval(AppState.heroSlider);
-          startHeroSlider();
         });
-      });
+      }, 5000);
+    }
+    
+    function goToSlide(index) {
+      var slides = document.querySelectorAll('.hero-slide');
+      var dots = document.querySelectorAll('.hero-dot');
+      if (slides.length === 0 || dots.length === 0) return;
+      
+      slides[AppState.currentSlide].classList.remove('active');
+      dots[AppState.currentSlide].classList.remove('active');
+      
+      AppState.currentSlide = index;
+      
+      slides[AppState.currentSlide].classList.add('active');
+      dots[AppState.currentSlide].classList.add('active');
+      
+      clearInterval(AppState.heroSlider);
+      startHeroSlider();
+    }
+    
+    function toggleHeroAutoplay() {
+      AppState.heroAutoplay = !AppState.heroAutoplay;
+      var pauseBtn = document.querySelector('.hero-pause');
+      if (pauseBtn) {
+        pauseBtn.innerHTML = AppState.heroAutoplay ? '&#9646;&#9646;' : '&#9654;';
+      }
+      if (AppState.heroAutoplay) {
+        startHeroSlider();
+      } else {
+        clearInterval(AppState.heroSlider);
+      }
     }
 
     /* ========== LIGHTBOX ========== */
     var lightboxIndex = 0;
-
+    
     function openLightbox(index) {
+      // Bounds check
+      if (index < 0 || index >= galleryData.length) return;
       lightboxIndex = index;
       var img = document.getElementById('lightboxImg');
-      img.src = galleryData[index].img;
+      if (!img) return;
+      
+      // Transition effect
+      img.classList.add('changing');
+      setTimeout(function() {
+        img.src = galleryData[index].img;
+        img.alt = AppState.currentLang === 'zh' 
+          ? galleryData[index].title 
+          : galleryData[index].titleEn;
+        img.classList.remove('changing');
+      }, 150);
+      
       document.getElementById('lightbox').classList.add('open');
+      document.documentElement.style.overflow = 'hidden';
       document.body.style.overflow = 'hidden';
+      
+      // Update counter
+      updateLightboxCounter();
     }
-
+    
     function closeLightbox() {
       document.getElementById('lightbox').classList.remove('open');
+      document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
     }
-
+    
     function lightboxPrev() {
-      lightboxIndex = (lightboxIndex - 1 + galleryData.length) % galleryData.length;
-      document.getElementById('lightboxImg').src = galleryData[lightboxIndex].img;
+      var newIndex = (lightboxIndex - 1 + galleryData.length) % galleryData.length;
+      openLightbox(newIndex);
     }
-
+    
     function lightboxNext() {
-      lightboxIndex = (lightboxIndex + 1) % galleryData.length;
-      document.getElementById('lightboxImg').src = galleryData[lightboxIndex].img;
+      var newIndex = (lightboxIndex + 1) % galleryData.length;
+      openLightbox(newIndex);
+    }
+    
+    function updateLightboxCounter() {
+      var counter = document.querySelector('.lightbox-counter');
+      if (!counter) {
+        counter = document.createElement('div');
+        counter.className = 'lightbox-counter';
+        var lightbox = document.getElementById('lightbox');
+        if (lightbox) lightbox.appendChild(counter);
+      }
+      counter.textContent = (lightboxIndex + 1) + ' / ' + galleryData.length;
+      
+      // Update caption
+      var caption = document.querySelector('.lightbox-caption');
+      if (!caption) {
+        caption = document.createElement('div');
+        caption.className = 'lightbox-caption';
+        var lightbox2 = document.getElementById('lightbox');
+        if (lightbox2) lightbox2.appendChild(caption);
+      }
+      caption.textContent = AppState.currentLang === 'zh' 
+        ? galleryData[lightboxIndex].title 
+        : galleryData[lightboxIndex].titleEn;
     }
 
     /* ========== HEADER SCROLL ========== */
@@ -1915,18 +2038,77 @@
 
     /* ========== INIT ========== */
     document.addEventListener('DOMContentLoaded', function() {
+      // Initialize autoplay state
+      AppState.heroAutoplay = true;
+      
       // Set initial language
       switchLang('en');
       
       // Start hero slider
       startHeroSlider();
       
-      // Header scroll
-      window.addEventListener('scroll', handleHeaderScroll);
+      // Header scroll - passive for better performance
+      window.addEventListener('scroll', handleHeaderScroll, { passive: true });
       handleHeaderScroll();
+      
+      // Hero dots - event delegation (avoid memory leak)
+      var heroDots = document.getElementById('heroDots');
+      if (heroDots) {
+        heroDots.addEventListener('click', function(e) {
+          var dot = e.target.closest('.hero-dot');
+          if (!dot) return;
+          var slideIndex = parseInt(dot.dataset.slide, 10);
+          if (!isNaN(slideIndex)) {
+            goToSlide(slideIndex);
+          }
+        });
+      }
+      
+      // Hero nav arrows
+      var heroPrev = document.querySelector('.hero-nav.prev');
+      var heroNext = document.querySelector('.hero-nav.next');
+      if (heroPrev) {
+        heroPrev.addEventListener('click', function() {
+          var slides = document.querySelectorAll('.hero-slide');
+          var newIndex = (AppState.currentSlide - 1 + slides.length) % slides.length;
+          goToSlide(newIndex);
+        });
+      }
+      if (heroNext) {
+        heroNext.addEventListener('click', function() {
+          var slides = document.querySelectorAll('.hero-slide');
+          var newIndex = (AppState.currentSlide + 1) % slides.length;
+          goToSlide(newIndex);
+        });
+      }
+      
+      // Hero pause button
+      var heroPause = document.querySelector('.hero-pause');
+      if (heroPause) {
+        heroPause.addEventListener('click', toggleHeroAutoplay);
+      }
       
       // Fade animation
       initFadeAnimation();
+      
+      // Back to top button
+      var backToTop = document.createElement('button');
+      backToTop.className = 'back-to-top';
+      backToTop.setAttribute('aria-label', 'Back to top');
+      backToTop.innerHTML = '&#8593;';
+      document.body.appendChild(backToTop);
+      
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 500) {
+          backToTop.classList.add('visible');
+        } else {
+          backToTop.classList.remove('visible');
+        }
+      }, { passive: true });
+      
+      backToTop.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
       
       // Lightbox keyboard
       document.addEventListener('keydown', function(e) {
@@ -1938,9 +2120,12 @@
       });
       
       // Lightbox click to close
-      document.getElementById('lightbox').addEventListener('click', function(e) {
-        if (e.target === this) closeLightbox();
-      });
+      var lightbox = document.getElementById('lightbox');
+      if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+          if (e.target === lightbox) closeLightbox();
+        });
+      }
 
       // Mobile menu - with null checks
       var mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -1986,6 +2171,13 @@
         });
       }
       } // end null check
+    });
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+      if (AppState.heroSlider) {
+        clearInterval(AppState.heroSlider);
+      }
     });
   </script>
 
