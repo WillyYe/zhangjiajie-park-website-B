@@ -1861,7 +1861,7 @@
       if (!carousel || !dotsContainer) return;
       
       var lang = AppState.currentLang;
-      var cardsPerSlide = window.innerWidth <= 768 ? 1 : (window.innerWidth <= 1024 ? 2 : 3);
+      var cardsPerSlide = window.innerWidth < 768 ? 1 : (window.innerWidth <= 1024 ? 2 : 3);
       var totalSlides = Math.ceil(newsData.length / cardsPerSlide);
       NewsCarouselState.totalSlides = totalSlides;
       if (resetSlide) NewsCarouselState.currentSlide = 0;
@@ -1873,7 +1873,7 @@
         var endIdx = Math.min(startIdx + cardsPerSlide, newsData.length);
         for (var j = startIdx; j < endIdx; j++) {
           var item = newsData[j];
-          html += '<div class="news-carousel-card" onclick="window.open(\'http://www.hnzjj.com/\', \'_blank\')">';
+          html += '<div class="news-carousel-card" onclick="if(!window._newsSwiped) window.open(\'http://www.hnzjj.com/\', \'_blank\')">';
           html += '<div class="news-carousel-img" style="background-image: url(\'' + escapeHtml(item.img) + '\')">';
           html += '<div class="news-date">';
           html += '<div class="news-date-day">' + escapeHtml(item.date.day) + '</div>';
@@ -1996,6 +1996,8 @@
       } else if (diff < -threshold) {
         prevNewsSlide();
       }
+      window._newsSwiped = true;
+      setTimeout(function() { window._newsSwiped = false; }, 500);
       resumeNewsCarousel();
     }
 
