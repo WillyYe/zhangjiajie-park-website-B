@@ -840,22 +840,8 @@
       position: relative;
     }
     .map-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 12px;
-      color: var(--green-mid);
+      display: none;
     }
-    .map-placeholder-icon {
-      font-size: 48px;
-      opacity: 0.4;
-    }
-    .map-placeholder-text {
-      font-size: 14px;
-      opacity: 0.6;
     }
     .transport-ways {
       display: flex;
@@ -1322,9 +1308,14 @@
       </div>
     <div class="transport-layout">
       <div class="transport-map">
-        <div class="map-placeholder">
-          <div class="map-placeholder-icon">🗺️</div>
-          <div class="map-placeholder-text" data-i18n="map_loading">Loading map...</div>
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=110.3%2C29.2%2C110.6%2C29.45&amp;layer=mapnik&amp;marker=29.3256%2C110.4348"
+          style="width:100%;height:100%;border:none;"
+          loading="lazy"
+          title="Zhangjiajie National Forest Park location map"
+        ></iframe>
+        <div style="position:absolute;bottom:12px;right:12px;">
+          <a href="getting-here/" style="display:inline-block;padding:8px 16px;background:rgba(255,255,255,0.95);border-radius:8px;text-decoration:none;font-size:13px;font-weight:500;color:#2d6a4f;box-shadow:0 2px 8px rgba(0,0,0,0.12);" data-i18n="map_view_detail">View detailed map →</a>
         </div>
       </div>
       <div class="transport-ways">

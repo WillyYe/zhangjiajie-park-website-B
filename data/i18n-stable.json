@@ -43,8 +43,12 @@
     "ticket": "门票有效期",
     "ticket_desc": "首次入园起连续4天有效",
     "footer_copyright": "© 2026 张家界国家森林公园",
-    "footer_disclaimer": "官方网站：www.zhangjiajie.com.cn"
-  },
+    "footer_disclaimer": "官方网站：www.zhangjiajie.com.cn",
+    "map_view_detail": "查看详细地图 →",
+    "transport_plane_desc": "张家界荷花国际机场，距景区约35公里（45分钟车程），打车约¥100-150，机场大巴约¥30",
+    "transport_train_desc": "张家界站和张家界西站（高铁站），距景区约20公里，打车约¥60-80",
+    "transport_bus_desc": "张家界汽车站直达景区，约40分钟，票价约¥15",
+    "transport_car_desc": "导航至张家界国家森林公园门票站，景区有停车场，停车费约¥20/天"
   "en": {
     "park_full_name": "Zhangjiajie National Forest Park",
     "park_subtitle": "China's First National Forest Park · UNESCO World Heritage",
@@ -89,6 +93,10 @@
     "ticket": "Ticket Validity",
     "ticket_desc": "Valid for 4 consecutive days from first entry",
     "footer_copyright": "© 2026 Zhangjiajie National Forest Park",
-    "footer_disclaimer": "Official Website: www.zhangjiajie.com.cn"
-  }
+    "footer_disclaimer": "Official Website: www.zhangjiajie.com.cn",
+    "map_view_detail": "View detailed map →",
+    "transport_plane_desc": "Zhangjiajie Hehua Airport (DYG), 35km to park (~45 min by taxi). Taxi: ¥100-150 | Airport shuttle: ¥30. Show driver: 张家界国家森林公园",
+    "transport_train_desc": "Zhangjiajie Station & West Station (high-speed), 20km to park. Taxi: ¥60-80. Show driver: 张家界国家森林公园",
+    "transport_bus_desc": "Direct bus from Zhangjiajie Bus Station, ~40 min, ¥15. Show driver: 国家森林公园",
+    "transport_car_desc": "Navigate to Zhangjiajie National Forest Park Ticket Station. Parking: ~¥20/day. GPS: 29.3256, 110.4348"
 }
