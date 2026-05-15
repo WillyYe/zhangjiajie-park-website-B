@@ -486,6 +486,9 @@
       box-shadow: 0 2px 12px var(--shadow);
       transition: transform 0.25s, box-shadow 0.25s;
       cursor: pointer;
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
     .news-carousel-card:hover {
       transform: translateY(-4px);
@@ -1864,7 +1867,7 @@
         var endIdx = Math.min(startIdx + cardsPerSlide, newsData.length);
         for (var j = startIdx; j < endIdx; j++) {
           var item = newsData[j];
-          html += '<div class="news-carousel-card" onclick="if(!window._newsSwiped) window.open(\'http://www.hnzjj.com/\', \'_blank\')">';
+          html += '<a href="news-detail.html?id=' + j + '" class="news-carousel-card">';
           html += '<div class="news-carousel-img" style="background-image: url(\'' + escapeHtml(item.img) + '\')">';
           html += '<div class="news-date">';
           html += '<div class="news-date-day">' + escapeHtml(item.date.day) + '</div>';
@@ -1875,7 +1878,7 @@
           html += '<div class="news-carousel-body">';
           html += '<h3 class="news-carousel-title">' + escapeHtml(lang === 'zh' ? item.title : item.titleEn) + '</h3>';
           html += '<p class="news-carousel-text">' + escapeHtml(lang === 'zh' ? item.desc : item.descEn) + '</p>';
-          html += '</div></div>';
+          html += '</div></a>';
         }
         html += '</div>';
       }
