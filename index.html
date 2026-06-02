@@ -406,6 +406,15 @@
       justify-content: center;
       font-size: 18px;
     }
+    .info-email {
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .info-email:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
     .info-label {
       font-size: 11px;
       opacity: 0.6;
@@ -1220,6 +1229,13 @@
           <div class="info-value">Zhangjiajie City, Hunan Province</div>
         </div>
       </div>
+      <div class="info-item">
+        <div class="info-icon">📧</div>
+        <div>
+          <div class="info-label" data-i18n="info_contact">Contact</div>
+          <div class="info-value"><a href="mailto:zjjpark@outlook.com" class="info-email">zjjpark@outlook.com</a></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1443,6 +1459,7 @@
         info_days: '4 Days',
         info_hours: 'Opening Hours',
         info_location: 'Location',
+        info_contact: 'Contact',
         news_tag: 'PARK NEWS',
         news_title: 'Park News',
         news_desc: 'Stay updated with the latest news, events and visitor information',
@@ -1499,6 +1516,7 @@
         info_days: '4天',
         info_hours: '开放时间',
         info_location: '所在地',
+        info_contact: '联系我们',
         news_tag: '公园资讯',
         news_title: '公园资讯',
         news_desc: '了解张家界最新动态、活动公告与游客须知',
